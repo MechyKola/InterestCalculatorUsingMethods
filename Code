@@ -1,0 +1,88 @@
+
+//same as other interest calculator, but this time uses methods
+
+using System;
+
+namespace MethodsInterestCalculator
+{
+	public class MainClass
+	{
+		public static void Main (string[] args)
+		{
+			//section 1 = inputing data needed for table
+
+			decimal principal = 0M;
+			decimal interest = 0M;
+			decimal duration = 0M;
+			InputInterestData (ref principal, ref interest, ref duration);
+
+			//section 2 = verify data by mirroring it back to the user
+			Console.WriteLine (); //skip a line
+			Console.WriteLine ("Principal     = " + principal);
+			Console.WriteLine ("Interest      = " + interest);
+			Console.WriteLine ("Duration      = " + duration);
+			Console.WriteLine ();
+
+			//section 3 = Finally, output the interest table
+			OutputInterestTable(principal, interest, duration);
+
+			//wait for user to acknowledge results
+			Console.WriteLine("Press Enter to terminate");
+			Console.Read();
+		}
+
+		//inputInterestData = retrieve information needed to create
+		//the value table
+		public static void InputInterestData (ref decimal principal,
+			ref decimal interest, ref decimal duration)
+		{
+			//retrieve principal
+			principal = InputPositiveDecimal ("principal");
+
+			//retrieve interest rate
+			interest = InputPositiveDecimal ("interest");
+
+			//retrieve duration from user
+			duration = InputPositiveDecimal ("duration");
+	}
+		//InputPositiveDecimal = return positive decimal from keyboard
+		public static decimal InputPositiveDecimal (string prompt)
+		{
+			//keep trying until the user get's it right
+			for (;;) {
+				//prompt user for input
+				Console.Write ("Enter " + prompt + ":");
+				//retrieve a decimal value from keyboard
+				string input = Console.ReadLine ();
+				decimal value = Convert.ToDecimal (input);
+				//exit loop if value correct (positive)
+				if (value >= 0) {
+					//return decimal value entered by user
+					return value;
+				}
+				//otherwise, generate error on incorect input
+				Console.WriteLine (prompt + "cannot be negative");
+				Console.WriteLine ("Try Again");
+				Console.WriteLine ();
+			}
+		}
+		//OutputInterestTable = given principal and interest
+		//generate table for number of periods indicated in duration
+		public static void OutputInterestTable (decimal principal,
+			decimal interest, decimal duration)
+		{
+			for (int year = 1; year <= duration; year++) 
+			{
+				//calculate value of principal plus interest.
+				decimal interestpaid;
+				interestpaid = principal * (interest / 100);
+				//now calculate proncipal by adding the interest
+				principal = principal + interestpaid;
+				//round to nearest hundredth
+				principal = decimal.Round (principal, 2);
+				//output the results
+				Console.WriteLine (year + "-" + principal);
+			}
+		}
+	}
+}
